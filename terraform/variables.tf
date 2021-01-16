@@ -1,22 +1,16 @@
-variable "access_key" {
-  type = string
-}
-
-variable "secret_key" {
-  type = string
-}
-
 variable "bucket_name" {
   type    = string
-  default = "xistz-udagram-microservices-bucket"
+  default = "xistz-udagram-microservices-dev"
 }
 
 variable "db_identifier" {
-  type = string
+  type    = string
+  default = "udagram-mircoservices-dev"
 }
 
 variable "db_name" {
-  type = string
+  type    = string
+  default = "udagram_dev"
 }
 
 variable "db_password" {
