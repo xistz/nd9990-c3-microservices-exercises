@@ -11,15 +11,15 @@ resource "aws_db_instance" "udagram" {
   parameter_group_name   = "default.postgres12"
   publicly_accessible    = true
   skip_final_snapshot    = true
-  vpc_security_group_ids = [aws_security_group.udagram.id]
+  vpc_security_group_ids = [aws_security_group.udagram_postgres.id]
   db_subnet_group_name   = aws_db_subnet_group.udagram.name
 }
 
 resource "aws_db_subnet_group" "udagram" {
-  name       = "udagram-db-subnet"
-  subnet_ids = [aws_subnet.udagram_1.id, aws_subnet.udagram_2.id]
+  name       = "udagram-postgres-subnet"
+  subnet_ids = aws_subnet.udagram_public[*].id
 
   tags = {
-    Name = "Udagram DB subnet"
+    Name = "Udagram Postgres subnet"
   }
 }
