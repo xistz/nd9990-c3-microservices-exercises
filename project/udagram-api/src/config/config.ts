@@ -5,8 +5,8 @@ export const config = {
   host: process.env.POSTGRES_HOST,
   dialect: 'postgres',
   awsRegion: process.env.AWS_REGION,
-  awsAccessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  awsSecretAccessKey: process.env.AWS_SCRET_ACCESS_KEY,
+  awsAccessKeyId: process.env.AWS_BUCKET_ACCESS_KEY_ID,
+  awsSecretAccessKey: process.env.AWS_BUCKET_SECRET_ACCESS_KEY,
   awsMediaBucket: process.env.AWS_BUCKET,
   url: process.env.URL,
   jwt: {
