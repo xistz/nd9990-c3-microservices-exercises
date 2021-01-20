@@ -19,4 +19,5 @@ RUN curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add - \
 # RUN su node -c "source /usr/local/share/nvm/nvm.sh && nvm install ${EXTRA_NODE_VERSION}"
 
 # [Optional] Uncomment if you want to install more global node packages
-# RUN su node -c "npm install -g <your-package-list -here>"
+RUN su node -c "npm install -g @ionic/cli"
+
