@@ -24,20 +24,37 @@ resource "aws_s3_bucket_public_access_block" "udagram" {
   restrict_public_buckets = true
 }
 
-# if required
-# data "aws_iam_policy_document" "udagram_bucket" {
-#   version = "2012-10-17"
-#   statement {
-#     sid    = "S3AccessPolicy"
-#     effect = "Allow"
-#     resources = [
-#       aws_s3_bucket.udagram.arn
-#     ]
-#     actions = [
-#       "s3:ListBucket",
-#       "s3:GetObject",
-#       "s3:PutObject",
-#       "s3:DeleteObject"
-#     ]
-#   }
-# }
+resource "aws_iam_user" "udagram_bucket" {
+  name = "udagram-bucket"
+
+  tags = {
+    Name = "Udagram bucket"
+  }
+}
+
+data "aws_iam_policy_document" "udagram_bucket" {
+  version = "2012-10-17"
+  statement {
+    sid    = "S3AccessPolicy"
+    effect = "Allow"
+    resources = [
+      aws_s3_bucket.udagram.arn
+    ]
+    actions = [
+      "s3:ListBucket",
+      "s3:GetObject",
+      "s3:PutObject",
+      "s3:DeleteObject"
+    ]
+  }
+}
+
+resource "aws_iam_user_policy" "udagram_bucket" {
+  name   = "udagram-bucket"
+  user   = aws_iam_user.udagram_bucket.name
+  policy = data.aws_iam_policy_document.udagram_bucket.json
+}
+
+resource "aws_iam_access_key" "udagram_bucket" {
+  user = aws_iam_user.udagram_bucket.name
+}
