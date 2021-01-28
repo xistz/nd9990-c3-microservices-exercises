@@ -5,6 +5,8 @@ import { AuthMenuUserComponent } from './auth-menu-user/auth-menu-user.component
 import { AuthService } from '../services/auth.service';
 import { AuthLoginComponent } from '../auth-login/auth-login.component';
 import { AuthRegisterComponent } from '../auth-register/auth-register.component';
+import { BehaviorSubject } from 'rxjs';
+import { User } from '../models/user.model';
 
 @Component({
   selector: 'app-auth-menu-button',
@@ -12,11 +14,10 @@ import { AuthRegisterComponent } from '../auth-register/auth-register.component'
   styleUrls: ['./auth-menu-button.component.scss'],
 })
 export class AuthMenuButtonComponent implements OnInit {
-
   constructor(
     private auth: AuthService,
     public modalController: ModalController
-    ) {}
+  ) {}
 
   async presentmodal(ev: any) {
     const modal = await this.modalController.create({
@@ -45,4 +46,7 @@ export class AuthMenuButtonComponent implements OnInit {
 
   ngOnInit() {}
 
+  public get currentUser(): BehaviorSubject<User> {
+    return this.auth.currentUser$;
+  }
 }
