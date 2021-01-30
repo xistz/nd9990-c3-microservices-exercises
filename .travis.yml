@@ -1,5 +1,10 @@
 dist: bionic
 
+addons:
+  apt:
+    packages:
+      - docker-ce
+
 env:
   - SERVICE=udagram-feed-api
   - SERVICE=udagram-user-api
@@ -7,6 +12,7 @@ env:
 
 before_script:
   - cd project/$SERVICE
+  - docker --version
 
 script:
   - docker build -t $DOCKER_USERNAME/$SERVICE .
