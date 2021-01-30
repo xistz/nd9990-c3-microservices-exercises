@@ -13,20 +13,17 @@ RUN npm run build
 
 FROM node:12-alpine as release
 
-ARG user=user-api
-ARG group=udagram
-
 WORKDIR /app
 
-RUN addgroup -S ${group} && adduser -S ${user} -G ${group}
+RUN addgroup -S udagram && adduser -S user-api -G udagram
 
-COPY --from=base --chown=${user}:${group} /app/package.json .
-COPY --from=base --chown=${user}:${group}  /app/package-lock.json .
+COPY --from=base --chown=user-api:udagram /app/package.json .
+COPY --from=base --chown=user-api:udagram  /app/package-lock.json .
 
 RUN npm ci --only=prod
 
-COPY --from=base --chown=${user}:${group}  /app/www .
+COPY --from=base --chown=user-api:udagram  /app/www .
 
-USER ${user}:${group} 
+USER user-api:udagram 
 
 CMD [ "node", "server.js" ]
