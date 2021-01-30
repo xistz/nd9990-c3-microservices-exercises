@@ -13,7 +13,7 @@ RUN npm run build
 
 FROM node:12-alpine as release
 
-ARG user=feed
+ARG user=user-api
 ARG group=udagram
 
 WORKDIR /app
