@@ -15,15 +15,15 @@ FROM node:12-alpine as release
 
 WORKDIR /app
 
-RUN addgroup -S $udagram && adduser -S feed-api -G $udagram
+RUN addgroup -S udagram && adduser -S feed-api -G udagram
 
-COPY --from=base --chown=feed-api:$udagram /app/package.json .
-COPY --from=base --chown=feed-api:$udagram  /app/package-lock.json .
+COPY --from=base --chown=feed-api:udagram /app/package.json .
+COPY --from=base --chown=feed-api:udagram  /app/package-lock.json .
 
 RUN npm ci --only=prod
 
-COPY --from=base --chown=feed-api:$udagram  /app/www .
+COPY --from=base --chown=feed-api:udagram  /app/www .
 
-USER feed-api:$udagram 
+USER feed-api:udagram 
 
 CMD [ "node", "server.js" ]
