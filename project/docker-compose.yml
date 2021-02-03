@@ -1,20 +1,33 @@
 version: '3.9'
 
+x-api: &api-defaults
+  environment:
+    POSTGRES_USERNAME: udagram
+    POSTGRES_PASSWORD: example
+    POSTGRES_DB: udagram_dev
+    POSTGRES_HOST: udagram-db
+
 services:
   udagram-feed-api:
     build:
       context: ./udagram-feed-api
+    <<: *api-defaults
   udagram-frontend:
     build:
       context: ./udagram-frontend
   udagram-user-api:
     build:
       context: ./udagram-user-api
+    <<: *api-defaults
   udagram-reverse-proxy:
     build:
       context: ./udagram-reverse-proxy
+    ports:
+      - 8080:8080
   udagram-db:
     image: postgres:12-alpine
     restart: always
     environment:
+      POSTGRES_USER: udagram
       POSTGRES_PASSWORD: example
+      POSTGRES_DB: udagram_dev
