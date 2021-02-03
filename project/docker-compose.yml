@@ -1,0 +1,20 @@
+version: '3.9'
+
+services:
+  udagram-feed-api:
+    build:
+      context: ./udagram-feed-api
+  udagram-frontend:
+    build:
+      context: ./udagram-frontend
+  udagram-user-api:
+    build:
+      context: ./udagram-user-api
+  udagram-reverse-proxy:
+    build:
+      context: ./udagram-reverse-proxy
+  udagram-db:
+    image: postgres:12-alpine
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: example
