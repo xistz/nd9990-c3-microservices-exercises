@@ -6,6 +6,9 @@ x-api: &api-defaults
     POSTGRES_PASSWORD: example
     POSTGRES_DB: udagram_dev
     POSTGRES_HOST: udagram-db
+    JWT_SECRET: secret
+  depends_on:
+    - udagram-db
 
 services:
   udagram-feed-api:
@@ -24,6 +27,10 @@ services:
       context: ./udagram-reverse-proxy
     ports:
       - 8080:8080
+    depends_on:
+      - udagram-feed-api
+      - udagram-user-api
+      - udagram-frontend
   udagram-db:
     image: postgres:12-alpine
     restart: always
@@ -31,3 +38,5 @@ services:
       POSTGRES_USER: udagram
       POSTGRES_PASSWORD: example
       POSTGRES_DB: udagram_dev
+    ports:
+      - 5432:5432
