@@ -14,14 +14,28 @@ services:
   udagram-feed-api:
     build:
       context: ./udagram-feed-api
-    <<: *api-defaults
+    environment:
+      POSTGRES_USERNAME: udagram_feed
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: udagram_feed_dev
+      POSTGRES_HOST: udagram-feed-db
+      JWT_SECRET: secret
+    depends_on:
+      - udagram-feed-db
   udagram-frontend:
     build:
       context: ./udagram-frontend
   udagram-user-api:
     build:
       context: ./udagram-user-api
-    <<: *api-defaults
+    environment:
+      POSTGRES_USERNAME: udagram_user
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: udagram_user_dev
+      POSTGRES_HOST: udagram-user-db
+      JWT_SECRET: secret
+    depends_on:
+      - udagram-user-db
   udagram-reverse-proxy:
     build:
       context: ./udagram-reverse-proxy
@@ -31,12 +45,17 @@ services:
       - udagram-feed-api
       - udagram-user-api
       - udagram-frontend
-  udagram-db:
+  udagram-feed-db:
     image: postgres:12-alpine
     restart: always
     environment:
-      POSTGRES_USER: udagram
+      POSTGRES_USER: udagram_feed
       POSTGRES_PASSWORD: example
-      POSTGRES_DB: udagram_dev
-    ports:
-      - 5432:5432
+      POSTGRES_DB: udagram_feed_dev
+  udagram-user-db:
+    image: postgres:12-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: udagram_user
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: udagram_user_dev
