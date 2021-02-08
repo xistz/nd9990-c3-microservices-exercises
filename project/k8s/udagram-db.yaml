@@ -1,0 +1,53 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: udagram-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: udagram-db
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: udagram-db
+    spec:
+      containers:
+        - name: udagram-db
+          image: postgres:12-alpine
+          ports:
+            - containerPort: 5432
+          resources:
+            limits:
+              cpu: 500m
+              memory: 128Mi
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: udagram-db-secrets
+                  key: db_user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: udagram-db-secrets
+                  key: db_password
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: udagram-db-configmap
+                  key: db_name
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: udagram-db
+spec:
+  selector:
+    app: udagram-db
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432

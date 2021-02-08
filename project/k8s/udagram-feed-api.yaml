@@ -1,0 +1,63 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: udagram-feed-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: udagram-feed-api
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: udagram-feed-api
+    spec:
+      containers:
+        - name: udagram-feed-api
+          image: xistz/udagram-feed-api:latest
+          ports:
+            - containerPort: 8080
+          resources:
+            limits:
+              cpu: 500m
+              memory: 128Mi
+          env:
+            - name: POSTGRES_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: udagram-db-secrets
+                  key: db_user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: udagram-db-secrets
+                  key: db_password
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: udagram-db-configmap
+                  key: db_name
+            - name: POSTGRES_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: udagram-db-secrets
+                  key: db_host
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: udagram-db-secrets
+                  key: jwt_secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: udagram-feed-api
+spec:
+  selector:
+    app: udagram-feed-api
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080

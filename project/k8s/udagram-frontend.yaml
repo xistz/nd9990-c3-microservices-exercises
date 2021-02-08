@@ -1,0 +1,37 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: udagram-frontend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: udagram-frontend
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: udagram-frontend
+    spec:
+      containers:
+        - name: udagram-frontend
+          image: xistz/udagram-frontend:latest
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: 500m
+              memory: 128Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: udagram-frontend
+spec:
+  selector:
+    app: udagram-frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

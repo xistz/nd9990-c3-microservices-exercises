@@ -1,0 +1,37 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: udagram-reverse-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: udagram-reverse-proxy
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: udagram-reverse-proxy
+    spec:
+      containers:
+        - name: udagram-reverse-proxy
+          image: xistz/udagram-reverse-proxy:latest
+          ports:
+            - containerPort: 8080
+          resources:
+            limits:
+              cpu: 500m
+              memory: 128Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: udagram-reverse-proxy
+spec:
+  selector:
+    app: udagram-reverse-proxy
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
