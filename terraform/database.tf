@@ -3,7 +3,7 @@ resource "aws_db_instance" "udagram" {
   allocated_storage      = 20
   storage_type           = "gp2"
   engine                 = "postgres"
-  engine_version         = "12.4"
+  engine_version         = "12.5"
   instance_class         = "db.t2.micro"
   name                   = var.db_name
   username               = "udagram"
