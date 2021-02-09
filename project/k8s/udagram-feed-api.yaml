@@ -27,27 +27,52 @@ spec:
             - name: POSTGRES_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: udagram-db-secrets
+                  name: udagram-secrets
                   key: db_user
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: udagram-db-secrets
+                  name: udagram-secrets
                   key: db_password
             - name: POSTGRES_DB
               valueFrom:
                 configMapKeyRef:
-                  name: udagram-db-configmap
+                  name: udagram-configmap
                   key: db_name
             - name: POSTGRES_HOST
               valueFrom:
                 secretKeyRef:
-                  name: udagram-db-secrets
+                  name: udagram-secrets
                   key: db_host
+            - name: AWS_REGION
+              valueFrom:
+                configMapKeyRef:
+                  name: udagram-configmap
+                  key: aws_region
+            - name: AWS_BUCKET
+              valueFrom:
+                secretKeyRef:
+                  name: udagram-secrets
+                  key: aws_bucket
+            - name: AWS_BUCKET_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: udagram-secrets
+                  key: aws_bucket_access_key_id
+            - name: AWS_BUCKET_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: udagram-secrets
+                  key: aws_bucket_secret_access_key
+            - name: URL
+              valueFrom:
+                configMapKeyRef:
+                  name: udagram-configmap
+                  key: url
             - name: JWT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: udagram-db-secrets
+                  name: udagram-secrets
                   key: jwt_secret
 ---
 apiVersion: v1
