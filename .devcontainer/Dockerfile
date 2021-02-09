@@ -9,7 +9,7 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends software-properties-common
 
 # install terraform
-ARG TERRAFORM_VARIANT="0.14.3"
+ARG TERRAFORM_VARIANT="0.14.6"
 RUN curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add - \
     && sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main" \
     && sudo apt-get update && sudo apt-get install terraform=${TERRAFORM_VARIANT}
