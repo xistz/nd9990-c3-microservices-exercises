@@ -27,17 +27,17 @@ spec:
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
-                  name: udagram-db-secrets
+                  name: udagram-secrets
                   key: db_user
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: udagram-db-secrets
+                  name: udagram-secrets
                   key: db_password
             - name: POSTGRES_DB
               valueFrom:
                 configMapKeyRef:
-                  name: udagram-db-configmap
+                  name: udagram-configmap
                   key: db_name
 ---
 apiVersion: v1
