@@ -38,7 +38,7 @@ data "aws_iam_policy_document" "udagram_bucket" {
     sid    = "S3AccessPolicy"
     effect = "Allow"
     resources = [
-      aws_s3_bucket.udagram.arn
+      "${aws_s3_bucket.udagram.arn}/*"
     ]
     actions = [
       "s3:ListBucket",
