@@ -1,41 +1,21 @@
 version: '3.9'
 
 x-api: &api-defaults
-  environment:
-    POSTGRES_USERNAME: udagram
-    POSTGRES_PASSWORD: example
-    POSTGRES_DB: udagram_dev
-    POSTGRES_HOST: udagram-db
-    JWT_SECRET: secret
-  depends_on:
-    - udagram-db
+  env_file:
+    - .env.dev
 
 services:
   udagram-feed-api:
     build:
       context: ./udagram-feed-api
-    environment:
-      POSTGRES_USERNAME: udagram
-      POSTGRES_PASSWORD: example
-      POSTGRES_DB: udagram_dev
-      POSTGRES_HOST: udagram-db
-      JWT_SECRET: secret
-    depends_on:
-      - udagram-db
+    <<: *api-defaults
   udagram-frontend:
     build:
       context: ./udagram-frontend
   udagram-user-api:
     build:
       context: ./udagram-user-api
-    environment:
-      POSTGRES_USERNAME: udagram
-      POSTGRES_PASSWORD: example
-      POSTGRES_DB: udagram_dev
-      POSTGRES_HOST: udagram-db
-      JWT_SECRET: secret
-    depends_on:
-      - udagram-db
+    <<: *api-defaults
   udagram-reverse-proxy:
     build:
       context: ./udagram-reverse-proxy
@@ -45,10 +25,3 @@ services:
       - udagram-feed-api
       - udagram-user-api
       - udagram-frontend
-  udagram-db:
-    image: postgres:12-alpine
-    restart: always
-    environment:
-      POSTGRES_USER: udagram
-      POSTGRES_PASSWORD: example
-      POSTGRES_DB: udagram_dev
