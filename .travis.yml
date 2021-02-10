@@ -1,12 +1,8 @@
 dist: focal
-python: 3.9
-
-before_script:
-  - cd project/$SERVICE
-  - docker --version
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
 script:
+  - cd project/$SERVICE
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker build -t $DOCKER_USERNAME/$SERVICE .
   - docker push $DOCKER_USERNAME/$SERVICE
 
@@ -18,6 +14,7 @@ jobs:
     - env: SERVICE=udagram-frontend
     - env: SERVICE=udagram-reverse-proxy
     - stage: deploy
+      python: 3.9
       install:
         - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
         - unzip awscliv2.zip
