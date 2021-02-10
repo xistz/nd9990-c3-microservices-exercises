@@ -4,11 +4,6 @@ python: 3.9
 env:
   global:
     - DOCKER_BUILDKIT=1
-  jobs:
-    - SERVICE=udagram-feed-api
-    - SERVICE=udagram-user-api
-    - SERVICE=udagram-frontend
-    - SERVICE=udagram-reverse-proxy
 
 before_script:
   - cd project/$SERVICE
@@ -21,6 +16,11 @@ script:
 
 jobs:
   include:
+    - stage: build
+      env: SERVICE=udagram-feed-api
+    - env: SERVICE=udagram-user-api
+    - env: SERVICE=udagram-frontend
+    - env: SERVICE=udagram-reverse-proxy
     - stage: deploy
       install:
         - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
