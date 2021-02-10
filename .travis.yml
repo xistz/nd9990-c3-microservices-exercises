@@ -1,4 +1,5 @@
 dist: focal
+python: 3.9
 
 env:
   - SERVICE=udagram-feed-api
@@ -14,3 +15,14 @@ script:
   - docker build -t $DOCKER_USERNAME/$SERVICE .
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker push $DOCKER_USERNAME/$SERVICE
+
+before_deploy:
+  - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+  - unzip awscliv2.zip
+  - sudo ./aws/install
+
+deploy:
+  provider: script
+  script: bash deploy.sh
+  on:
+    branch: main
