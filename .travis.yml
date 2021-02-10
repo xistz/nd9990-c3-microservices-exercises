@@ -2,6 +2,7 @@ dist: focal
 python: 3.9
 
 env:
+  - DOCKER_BUILDKIT=1
   - SERVICE=udagram-feed-api
   - SERVICE=udagram-user-api
   - SERVICE=udagram-frontend
