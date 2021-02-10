@@ -13,10 +13,10 @@ env:
 before_script:
   - cd project/$SERVICE
   - docker --version
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
 script:
   - docker build -t $DOCKER_USERNAME/$SERVICE .
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker push $DOCKER_USERNAME/$SERVICE
 
 jobs:
