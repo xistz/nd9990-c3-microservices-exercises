@@ -1,10 +1,6 @@
 dist: focal
 python: 3.9
 
-env:
-  global:
-    - DOCKER_BUILDKIT=1
-
 before_script:
   - cd project/$SERVICE
   - docker --version
