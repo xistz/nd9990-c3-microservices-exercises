@@ -19,14 +19,12 @@ script:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker push $DOCKER_USERNAME/$SERVICE
 
-before_deploy:
-  - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-  - unzip awscliv2.zip
-  - sudo ./aws/install
-  - ls
-
-deploy:
-  provider: script
-  script: bash deploy.sh
-  on:
-    branch: main
+jobs:
+  include:
+    - stage: deploy
+      install:
+        - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+        - unzip awscliv2.zip
+        - sudo ./aws/install
+      script:
+        - aws --version
