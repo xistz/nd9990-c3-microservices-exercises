@@ -2,11 +2,13 @@ dist: focal
 python: 3.9
 
 env:
-  - DOCKER_BUILDKIT=1
-  - SERVICE=udagram-feed-api
-  - SERVICE=udagram-user-api
-  - SERVICE=udagram-frontend
-  - SERVICE=udagram-reverse-proxy
+  global:
+    - DOCKER_BUILDKIT=1
+  jobs:
+    - SERVICE=udagram-feed-api
+    - SERVICE=udagram-user-api
+    - SERVICE=udagram-frontend
+    - SERVICE=udagram-reverse-proxy
 
 before_script:
   - cd project/$SERVICE
