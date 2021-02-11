@@ -39,6 +39,11 @@ import { V0_USER_MODELS } from './controllers/v0/model.index';
     res.send('/api/v0/');
   });
 
+  // healthcheck
+  app.get('/healthz', (req, res) => {
+    res.status(200).send('ok');
+  });
+
   // Start the Server
   app.listen(port, () => {
     console.log(`server running ${config.url}`);
