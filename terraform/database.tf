@@ -1,3 +1,7 @@
+resource "random_password" "db_password" {
+  length = 16
+}
+
 resource "aws_db_instance" "udagram" {
   identifier             = var.db_identifier
   allocated_storage      = 20
@@ -7,7 +11,7 @@ resource "aws_db_instance" "udagram" {
   instance_class         = "db.t2.micro"
   name                   = var.db_name
   username               = "udagram"
-  password               = var.db_password
+  password               = random_password.db_password
   parameter_group_name   = "default.postgres12"
   publicly_accessible    = true
   skip_final_snapshot    = true

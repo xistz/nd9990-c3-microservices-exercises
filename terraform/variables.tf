@@ -12,8 +12,3 @@ variable "db_name" {
   type    = string
   default = "udagram_dev"
 }
-
-variable "db_password" {
-  type      = string
-  sensitive = true
-}
