@@ -11,7 +11,7 @@ resource "aws_db_instance" "udagram" {
   instance_class         = "db.t2.micro"
   name                   = var.db_name
   username               = "udagram"
-  password               = random_password.db_password
+  password               = random_password.db_password.result
   parameter_group_name   = "default.postgres12"
   publicly_accessible    = true
   skip_final_snapshot    = true
