@@ -74,6 +74,12 @@ spec:
                 secretKeyRef:
                   name: udagram-secrets
                   key: jwt_secret
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 3
+            periodSeconds: 3
 ---
 apiVersion: v1
 kind: Service
