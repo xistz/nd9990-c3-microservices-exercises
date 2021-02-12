@@ -16,14 +16,5 @@ resource "aws_db_instance" "udagram" {
   publicly_accessible    = true
   skip_final_snapshot    = true
   vpc_security_group_ids = [aws_security_group.udagram_postgres.id]
-  db_subnet_group_name   = aws_db_subnet_group.udagram.name
-}
-
-resource "aws_db_subnet_group" "udagram" {
-  name       = "udagram-postgres-subnet"
-  subnet_ids = aws_subnet.udagram_public[*].id
-
-  tags = {
-    Name = "Udagram Postgres subnet"
-  }
+  db_subnet_group_name   = module.vpc.database_subnet_group
 }

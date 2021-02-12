@@ -1,64 +1,36 @@
-resource "aws_vpc" "udagram" {
-  cidr_block           = "10.0.0.0/16"
+data "aws_availability_zones" "available" {}
+
+module "vpc" {
+  source = "terraform-aws-modules/vpc/aws"
+
+  name                 = "udagram-microservices-vpc"
+  cidr                 = "10.0.0.0/16"
+  azs                  = data.aws_availability_zones.available.names
+  public_subnets       = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
   enable_dns_hostnames = true
+  enable_dns_support   = true
+
+  create_database_subnet_group           = true
+  create_database_subnet_route_table     = true
+  create_database_internet_gateway_route = true
 
   tags = {
-    Name = "udagram-vpc"
-  }
-}
-
-resource "aws_internet_gateway" "udagram" {
-  vpc_id = aws_vpc.udagram.id
-
-  tags = {
-    Name = "udagram-internet-gateway"
-  }
-}
-
-data "aws_availability_zones" "available" {
-  state = "available"
-}
-
-resource "aws_subnet" "udagram_public" {
-  count = length(data.aws_availability_zones.available.names)
-
-  vpc_id                  = aws_vpc.udagram.id
-  cidr_block              = cidrsubnet(aws_vpc.udagram.cidr_block, 8, count.index)
-  availability_zone       = data.aws_availability_zones.available.names[count.index]
-  map_public_ip_on_launch = true
-
-  tags = {
-    Name = "udagram-public-subnet-${count.index}"
-  }
-}
-
-resource "aws_route_table" "udagram_public" {
-  vpc_id = aws_vpc.udagram.id
-
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.udagram.id
+    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
   }
 
-  tags = {
-    Name = "udagram-public-route-table"
+  public_subnet_tags = {
+    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
+    "kubernetes.io/role/elb"                    = "1"
   }
-}
-
-resource "aws_route_table_association" "public" {
-  count = length(aws_subnet.udagram_public)
-
-  subnet_id      = aws_subnet.udagram_public[count.index].id
-  route_table_id = aws_route_table.udagram_public.id
 }
 
 resource "aws_security_group" "udagram_postgres" {
   name        = "allow-postgres"
   description = "Allow postgres traffic"
-  vpc_id      = aws_vpc.udagram.id
+  vpc_id      = module.vpc.vpc_id
 
   ingress {
-    cidr_blocks = [aws_vpc.udagram.cidr_block, "0.0.0.0/0"]
+    cidr_blocks = [module.vpc.vpc_cidr_block, "0.0.0.0/0"]
     from_port   = 5432
     protocol    = "tcp"
     to_port     = 5432
