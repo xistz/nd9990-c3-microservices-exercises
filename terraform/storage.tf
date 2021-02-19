@@ -1,22 +1,16 @@
-resource "aws_s3_bucket" "udagram" {
+module "s3_images" {
+  source = "terraform-aws-modules/s3-bucket/aws"
+
   bucket = var.bucket_name
   acl    = "private"
 
-  tags = {
-    Environment = "Dev"
-  }
-
-  cors_rule {
+  cors_rule = {
     allowed_origins = ["*"]
     allowed_headers = ["*"]
     allowed_methods = ["PUT", "POST", "DELETE"]
   }
 
   force_destroy = true
-}
-
-resource "aws_s3_bucket_public_access_block" "udagram" {
-  bucket = aws_s3_bucket.udagram.id
 
   block_public_acls       = true
   block_public_policy     = true
