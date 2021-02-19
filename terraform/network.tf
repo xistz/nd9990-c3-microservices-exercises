@@ -16,6 +16,7 @@ module "vpc" {
   create_database_subnet_group           = true
   create_database_subnet_route_table     = true
   create_database_internet_gateway_route = true
+  database_subnets                       = ["10.0.7.0/24", "10.0.8.0/24"]
 
   tags = {
     "kubernetes.io/cluster/${var.cluster_name}" = "shared"
