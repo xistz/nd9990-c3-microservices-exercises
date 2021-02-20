@@ -29,10 +29,8 @@ module "db" {
   backup_retention_period = 0
 
   # DB subnet group
-  # create_db_subnet_group = false
-  db_subnet_group_name = module.vpc.database_subnet_group
-  subnet_ids           = module.vpc.database_subnets
-  publicly_accessible  = true
+  subnet_ids          = module.vpc.database_subnets
+  publicly_accessible = true
 
   # DB parameter group
   family = "postgres12"
