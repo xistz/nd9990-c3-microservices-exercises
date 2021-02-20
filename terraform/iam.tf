@@ -5,4 +5,5 @@ module "iam_users" {
 
   create_iam_user_login_profile = false
   name                          = each.value
+  force_destroy                 = true
 }
