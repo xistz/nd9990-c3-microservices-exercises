@@ -13,7 +13,6 @@ variable "db_identifier" {
   default = "udagram-mircoservices-dev"
 }
 
-
 variable "db_username" {
   type    = string
   default = "udagram"
