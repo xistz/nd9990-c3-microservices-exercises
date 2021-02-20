@@ -26,3 +26,8 @@ variable "db_name" {
 variable "cluster_name" {
   default = "udagram-eks"
 }
+
+variable "debug" {
+  type    = bool
+  default = false
+}
