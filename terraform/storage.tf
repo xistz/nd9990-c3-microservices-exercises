@@ -4,26 +4,23 @@ module "s3_images" {
   bucket = var.bucket_name
   acl    = "private"
 
-  cors_rule = {
-    allowed_origins = ["*"]
-    allowed_headers = ["*"]
-    allowed_methods = ["PUT", "POST", "DELETE"]
-  }
-
-  force_destroy = true
-
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
   restrict_public_buckets = true
-}
 
-resource "aws_iam_user" "udagram_bucket" {
-  name = "udagram-bucket"
+  cors_rule = [
+    {
+      allowed_origins = ["*"]
+      allowed_headers = ["*"]
+      allowed_methods = ["PUT", "POST", "DELETE"]
+    }
+  ]
 
-  tags = {
-    Name = "Udagram bucket"
-  }
+  attach_policy = true
+  policy        = data.aws_iam_policy_document.udagram_bucket.json
+
+  force_destroy = true
 }
 
 data "aws_iam_policy_document" "udagram_bucket" {
@@ -32,7 +29,8 @@ data "aws_iam_policy_document" "udagram_bucket" {
     sid    = "S3AccessPolicy"
     effect = "Allow"
     resources = [
-      "${aws_s3_bucket.udagram.arn}/*"
+      module.s3_images.this_s3_bucket_arn,
+      "${module.s3_images.this_s3_bucket_arn}/*"
     ]
     actions = [
       "s3:ListBucket",
@@ -40,15 +38,9 @@ data "aws_iam_policy_document" "udagram_bucket" {
       "s3:PutObject",
       "s3:DeleteObject"
     ]
+    principals {
+      type        = "AWS"
+      identifiers = [module.iam_users["udagram-bucket"].this_iam_user_arn]
+    }
   }
-}
-
-resource "aws_iam_user_policy" "udagram_bucket" {
-  name   = "udagram-bucket"
-  user   = aws_iam_user.udagram_bucket.name
-  policy = data.aws_iam_policy_document.udagram_bucket.json
-}
-
-resource "aws_iam_access_key" "udagram_bucket" {
-  user = aws_iam_user.udagram_bucket.name
 }
