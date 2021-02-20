@@ -36,7 +36,7 @@ resource "local_file" "k8s_secrets" {
   count = var.debug ? 1 : 0
 
   sensitive_content = local.k8s_secrets
-  filename          = "${path.module}/../project/k8s/udagram-secrets.yaml"
+  filename          = "${path.module}/../k8s/udagram-secrets.yaml"
 }
 
 resource "local_file" "env_dev" {
