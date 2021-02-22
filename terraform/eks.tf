@@ -7,7 +7,7 @@ module "eks" {
 
   node_groups = {
     first = {
-      desired_capacity = 1
+      desired_capacity = 2
       max_capacity     = 5
       min_capacity     = 1
 
