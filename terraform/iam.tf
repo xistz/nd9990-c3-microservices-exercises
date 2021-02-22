@@ -7,3 +7,44 @@ module "iam_users" {
   name                          = each.value
   force_destroy                 = true
 }
+
+data "aws_iam_policy_document" "eks_admin_policy" {
+  statement {
+    actions = [
+      "eks:*"
+    ]
+
+    resources = [
+      module.eks.cluster_arn
+    ]
+  }
+
+  statement {
+    actions = [
+      "iam:PassRole",
+    ]
+
+    resources = [
+      module.eks.cluster_arn
+    ]
+
+    condition {
+      test     = "StringEquals"
+      variable = "iam:PassedToService"
+
+      values = [
+        "eks.amazonaws.com",
+      ]
+    }
+  }
+}
+
+resource "aws_iam_policy" "eks_admin_policy" {
+  name   = "AmazonEKSAdminPolicy"
+  policy = data.aws_iam_policy_document.eks_admin_policy.json
+}
+
+resource "aws_iam_user_policy_attachment" "udagram_kubectl" {
+  user       = module.iam_users["udagram_kubectl"].this_iam_user_name
+  policy_arn = aws_iam_policy.eks_admin_policy.arn
+}
