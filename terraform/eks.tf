@@ -3,8 +3,7 @@ module "eks" {
   cluster_name    = "udagram"
   cluster_version = "1.19"
   subnets         = module.vpc.private_subnets
-
-  vpc_id = module.vpc.vpc_id
+  vpc_id          = module.vpc.vpc_id
 
   node_groups = {
     first = {
@@ -23,6 +22,8 @@ module "eks" {
       groups   = ["system:masters"]
     }
   ]
+
+  write_kubeconfig = false
 }
 
 data "aws_eks_cluster" "cluster" {
