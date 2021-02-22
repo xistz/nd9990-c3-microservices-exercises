@@ -1,41 +1,30 @@
-resource "aws_iam_role" "udagram_cluster" {
-  name = "udagram-eks-cluster-service-role"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Principal = {
-          Service = "eks.amazonaws.com"
-        }
-        Action = "sts:AssumeRole"
-      }
-    ]
-  })
+resource "random_password" "jwt_secret" {
+  length = 16
 }
 
-resource "aws_iam_role_policy_attachment" "udagram_eks_cluster_policy" {
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
-  role       = aws_iam_role.udagram_cluster.name
-}
-
-resource "aws_iam_role_policy_attachment" "udagram_eks_service_policy" {
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSServicePolicy"
-  role       = aws_iam_role.udagram_cluster.name
-}
-
-
-resource "aws_eks_cluster" "udagram" {
-  name     = "udagram"
-  role_arn = aws_iam_role.udagram_cluster.arn
-
-  vpc_config {
-    subnet_ids = aws_subnet.udagram_public[*].id
+resource "kubernetes_secret" "udagram" {
+  metadata {
+    name = "udagram-secrets"
   }
 
-  depends_on = [
-    aws_iam_role_policy_attachment.udagram_eks_cluster_policy,
-    aws_iam_role_policy_attachment.udagram_eks_service_policy
-  ]
+  data = {
+    db_host                      = module.db.this_db_instance_address
+    db_user                      = module.db.this_db_instance_username
+    db_password                  = module.db.this_db_instance_password
+    aws_bucket                   = module.s3_images.this_s3_bucket_id
+    aws_bucket_access_key_id     = module.iam_users["udagram-bucket"].this_iam_access_key_id
+    aws_bucket_secret_access_key = module.iam_users["udagram-bucket"].this_iam_access_key_secret
+    jwt_secret                   = random_password.jwt_secret.result
+  }
+}
+
+resource "kubernetes_config_map" "udagram" {
+  metadata {
+    name = "udagram-configmap"
+  }
+
+  data = {
+    db_name    = module.db.this_db_instance_name
+    aws_region = var.region
+  }
 }
