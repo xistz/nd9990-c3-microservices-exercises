@@ -1,7 +1,3 @@
-resource "random_password" "jwt_secret" {
-  length = 16
-}
-
 locals {
   k8s_secrets = <<-K8SSECRETS
   ---
