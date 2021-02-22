@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: udagram-configmap
-data:
-  db_name: udagram_dev
-  aws_region: ap-northeast-1
-  url: http://localhost:8080
