@@ -1,7 +1,7 @@
 module "eks" {
   source          = "terraform-aws-modules/eks/aws"
   cluster_name    = "udagram"
-  cluster_version = "1.18"
+  cluster_version = "1.19"
   subnets         = module.vpc.private_subnets
 
   vpc_id = module.vpc.vpc_id
