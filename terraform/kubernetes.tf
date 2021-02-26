@@ -26,5 +26,55 @@ resource "kubernetes_config_map" "udagram" {
   data = {
     db_name    = module.db.this_db_instance_name
     aws_region = var.region
+    url        = "http://localhost:8080"
+  }
+}
+
+resource "kubernetes_ingress" "udagram" {
+  wait_for_load_balancer = true
+  metadata {
+    name = "udagram-ingress"
+    annotations = {
+      "alb.ingress.kubernetes.io/scheme"      = "internet-facing"
+      "kubernetes.io/ingress.class"           = "alb"
+      "alb.ingress.kubernetes.io/target-type" = "ip"
+    }
+  }
+
+  spec {
+    rule {
+      http {
+        path {
+          backend {
+            service_name = "udagram-reverse-proxy"
+            service_port = 8080
+          }
+
+          path = "/*"
+        }
+      }
+    }
+  }
+
+  depends_on = [
+    helm_release.ingress
+  ]
+}
+
+resource "kubernetes_horizontal_pod_autoscaler" "udagram" {
+  for_each = toset(["udagram-feed-api", "udagram-user-api"])
+  metadata {
+    name = "${each.value}-hpa"
+  }
+
+  spec {
+    min_replicas                      = 1
+    max_replicas                      = 10
+    target_cpu_utilization_percentage = 50
+
+    scale_target_ref {
+      kind = "Deployment"
+      name = each.value
+    }
   }
 }
