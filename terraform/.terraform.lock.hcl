@@ -20,6 +20,41 @@ provider "registry.terraform.io/hashicorp/aws" {
   ]
 }
 
+provider "registry.terraform.io/hashicorp/helm" {
+  version = "2.0.2"
+  hashes = [
+    "h1:GJjzJSGrKLlrAX1hJf/FdrP7kYkkEBqtuFjcaKMX/rw=",
+    "zh:09f7b2389f0e41f51c933d014fe3a89aa53c12801ab45c082d3626689961d5a6",
+    "zh:0af792512adf59648b7cb7f0f194151ac926ae6805ffdb2baf61512b55933e17",
+    "zh:0e29837d65bf4dbe3b9766221a1a4448b2c9df7f4d3049a0b6812055e299c063",
+    "zh:25a0c4d1cba9a22f4d12f6465f191db6e2ec675cbc2c7751bf128bcae23848a8",
+    "zh:6d92f9ffd43a45f0f0da4c59cbb1790b163235882532a88344a53b8526808979",
+    "zh:7c98a0e05f106d4bbfc0c81f7d8b41bc8e867a99b30ccd472367d0414e778c30",
+    "zh:8de8232eedfa4ade990faea4ed3706f0846eb1d66fb82aa22718c7a9aeda92b1",
+    "zh:baff5ff10c9573104d25eece9f79477112ed6882c0ea9280ecbfa944d117838d",
+    "zh:d151fac8be471922cbe137f5a263f4854cdcfbf3fb8af7db83c709d64956934b",
+    "zh:e4d238facc27fc91d26aef79b7f398a6b9f3a1fe078c8d3f0cd4df47ec5aaacd",
+  ]
+}
+
+provider "registry.terraform.io/hashicorp/http" {
+  version = "2.1.0"
+  hashes = [
+    "h1:GYoVrTtiSAE3AlP1fad3fFmHoPaXAPhm/DJyMcVCwZA=",
+    "zh:03d82dc0887d755b8406697b1d27506bc9f86f93b3e9b4d26e0679d96b802826",
+    "zh:0704d02926393ddc0cfad0b87c3d51eafeeae5f9e27cc71e193c141079244a22",
+    "zh:095ea350ea94973e043dad2394f10bca4a4bf41be775ba59d19961d39141d150",
+    "zh:0b71ac44e87d6964ace82979fc3cbb09eb876ed8f954449481bcaa969ba29cb7",
+    "zh:0e255a170db598bd1142c396cefc59712ad6d4e1b0e08a840356a371e7b73bc4",
+    "zh:67c8091cfad226218c472c04881edf236db8f2dc149dc5ada878a1cd3c1de171",
+    "zh:75df05e25d14b5101d4bc6624ac4a01bb17af0263c9e8a740e739f8938b86ee3",
+    "zh:b4e36b2c4f33fdc44bf55fa1c9bb6864b5b77822f444bd56f0be7e9476674d0e",
+    "zh:b9b36b01d2ec4771838743517bc5f24ea27976634987c6d5529ac4223e44365d",
+    "zh:ca264a916e42e221fddb98d640148b12e42116046454b39ede99a77fc52f59f4",
+    "zh:fe373b2fb2cc94777a91ecd7ac5372e699748c455f44f6ea27e494de9e5e6f92",
+  ]
+}
+
 provider "registry.terraform.io/hashicorp/kubernetes" {
   version     = "2.0.2"
   constraints = ">= 1.11.1"
