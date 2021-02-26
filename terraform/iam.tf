@@ -45,6 +45,6 @@ resource "aws_iam_policy" "eks_admin_policy" {
 }
 
 resource "aws_iam_user_policy_attachment" "udagram_kubectl" {
-  user       = module.iam_users["udagram_kubectl"].this_iam_user_name
+  user       = module.iam_users["udagram-kubectl"].this_iam_user_name
   policy_arn = aws_iam_policy.eks_admin_policy.arn
 }
