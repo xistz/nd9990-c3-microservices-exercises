@@ -31,7 +31,6 @@ resource "kubernetes_config_map" "udagram" {
 }
 
 resource "kubernetes_ingress" "udagram" {
-  wait_for_load_balancer = true
   metadata {
     name = "udagram-ingress"
     annotations = {
