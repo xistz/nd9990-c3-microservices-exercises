@@ -23,6 +23,7 @@ module "eks" {
     }
   ]
 
+  enable_irsa      = true
   write_kubeconfig = false
 }
 
