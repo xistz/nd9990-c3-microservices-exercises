@@ -8,16 +8,27 @@ This repository implements the course 4 project, Refactor Monolith to Microservi
 
 This directory contains terraform code to provision the infrastructure required for the project on AWS.
 
-### Setup
+### Provison AWS resources
 
 ```shell
-# create aws resources using terraform
 terraform init
 terraform plan
 terraform apply
+```
 
+## k8s
+
+This directory contains the k8s manifests for deploying udagram.
+
+```shell
 # configure kubectl
-aws eks update-kubeconfig --name udagram
+export AWS_ACCESS_KEY_ID={access_key_id}
+export AWS_SECRET_ACCESS_KEY={secret_access_key}
+export AWS_DEFAULT_REGION={region}
+aws eks update-kubeconfig --name udagram-eks
+
+# deploy
+kubectl apply -f ./k8s
 ```
 
 ## project
